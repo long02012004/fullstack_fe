@@ -1,6 +1,12 @@
 .loginContainer {
-  margin-top: 80px;
-  width: 90%;
+  overflow: hidden;
+  padding-top: 150px;
+  min-width: 90vw;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
 
   .contentLeft {
     /*     border: 4px solid red; */
@@ -11,20 +17,39 @@
     .brand {
       width: 70%;
       justify-content: center;
-      color: rgb(48, 48, 216);
-      font-size: 36px;
+      color: #1877f2;
+      font-size: 30px;
       font-weight: bold;
+      text-transform: uppercase;
     }
     .desc {
-      font-size: 18px;
+      font-size: 20px;
       margin-top: 10px;
-      width: 70%;
+      max-width: 70%;
       color: #555;
     }
   }
   .contentRight {
-    /*    border: 4px solid orange; */
+    background-color: #fff;
     border-radius: 10px;
-    width: 34%;
+    box-sizing: border-box;
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.1),
+      0 8px 16px rgba(0, 0, 0, 0.1);
+
+    .forgotPassword {
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    .brand {
+      width: 100%;
+      text-align: center;
+      color: #1877f2;
+      font-size: 20px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
   }
 }

@@ -4,9 +4,11 @@ import Form from "react-bootstrap/Form";
 const Login = () => {
   return (
     <div className={styles.loginContainer}>
-      <div className="container mt-3">
-        <div className="row">
-          <div className={`col-md-7 ${styles.contentLeft} `}>
+      <div className="container px-3">
+        <div className="row px-4">
+          <div
+            className={`col-12 d-none col-sm-7 d-sm-block ${styles.contentLeft} `}
+          >
             <div className={styles.brand}>Quang Long</div>
             <div className={styles.desc}>
               Chào mừng bạn đến với trang web của chúng tôi! Rất vui được đồng
@@ -14,9 +16,10 @@ const Login = () => {
             </div>
           </div>
           <div
-            className={`col-md-5 d-flex flex-column gap-3 py-3 ${styles.contentRight} `}
+            className={`col-sm-5 col-12  d-flex flex-column gap-3 py-3  ${styles.contentRight} `}
           >
             <Form>
+              <div className={`d-sm-none ${styles.brand}`}>Quang Long</div>
               <Form.Group className="mb-3" controlId="formGroupEmail">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
@@ -32,7 +35,12 @@ const Login = () => {
             <button type="submit" className="btn btn-primary">
               Login
             </button>
-            <span className="text-center"> Forgot your password?</span>
+            <span className="text-center">
+              <a href="#" className={styles.forgotPassword}>
+                {" "}
+                Forgot your password?
+              </a>
+            </span>
             <hr />
             <button className="btn btn-success">Create New Account</button>
           </div>
