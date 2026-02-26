@@ -1,7 +1,7 @@
 .loginContainer {
   overflow: hidden;
-  padding-top: 150px;
-  min-width: 100vw;
+  padding-top: 50px;
+  min-width: 90vw;
   min-height: 100vh;
   background-color: #f0f2f5;
   margin: 0 auto;
@@ -32,7 +32,6 @@
   .contentRight {
     background-color: #fff;
     border-radius: 10px;
-
     box-sizing: border-box;
     box-shadow:
       0 2px 4px rgba(0, 0, 0, 0.1),
@@ -52,7 +51,7 @@
       font-weight: bold;
       text-transform: uppercase;
     }
-    .createAccountLink {
+    .alreadyHaveAccount {
       text-decoration: none;
       color: #fff;
       font-weight: bold;
