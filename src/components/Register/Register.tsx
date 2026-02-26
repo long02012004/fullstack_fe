@@ -1,8 +1,35 @@
 import styles from "./Register.module.scss";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
+/* import axios from "axios";
+ */ import { useEffect, useState } from "react";
 const Register = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
+  const handleRegister = () => {
+    const userData = {
+      email,
+      phone,
+      username,
+      password,
+    };
+    console.log("check data:", userData);
+  };
+  useEffect(() => {
+    // Test API
+    /* axios
+      .get("http://127.0.0.1:8080/api/test-api")
+      .then((response) => {
+        console.log("API Response:", response.data);
+      })
+      .catch((error) => {
+        console.error("API Error:", error);
+      }); */
+  });
   return (
     <div className={styles.loginContainer}>
       <div className="container px-3">
@@ -26,6 +53,8 @@ const Register = () => {
                 <Form.Control
                   type="email"
                   placeholder="Email address or phone number"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formGroupPhone">
@@ -33,25 +62,43 @@ const Register = () => {
                 <Form.Control
                   type="tel"
                   placeholder="Enter your phone number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formGroupUserName">
                 <Form.Label>User Name</Form.Label>
-                <Form.Control type="text" placeholder="Enter your user name" />
+                <Form.Control
+                  type="text"
+                  placeholder="Enter your user name"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formGroupPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formGroupRePassword">
                 <Form.Label>Re-enter Password</Form.Label>
-                <Form.Control type="password" placeholder="Re-enter Password" />
+                <Form.Control
+                  type="password"
+                  placeholder="Re-enter Password"
+                  value={rePassword}
+                  onChange={(e) => setRePassword(e.target.value)}
+                />
               </Form.Group>
             </Form>
             <button
               type="submit"
               className="btn btn-primary"
               style={{ width: "80%", textAlign: "center", margin: "0 auto" }}
+              onClick={() => handleRegister()}
             >
               Register
             </button>
