@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navigation from "./components/Navigation/Navigation";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
+import { Bounce, ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -16,6 +17,19 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
     </BrowserRouter>
   );
 }

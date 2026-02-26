@@ -3,33 +3,65 @@ import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 /* import axios from "axios";
  */ import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { FormEvent } from "react";
+
 const Register = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [rePassword, setRePassword] = useState("");
-  const handleRegister = () => {
+  const [email, setEmail] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [rePassword, setRePassword] = useState<string>("");
+  const isValidateInput = () => {
+    if (!email || !phone || !username || !password || !rePassword) {
+      toast.error("Please fill in all fields!");
+      return false;
+    }
+    if (password !== rePassword) {
+      toast.error("Password and Re-enter Password do not match!");
+      return false;
+    }
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long!");
+      return false;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      toast.error("Invalid email format!");
+      return false;
+    }
+    if (!/^\d{10,}$/.test(phone)) {
+      toast.error("Invalid phone number format! Must be at least 10 digits.");
+      return false;
+    }
+    return true;
+  };
+  const handleRegister = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const isValid = isValidateInput();
+    if (!isValid) {
+      return;
+    }
     const userData = {
       email,
       phone,
       username,
       password,
     };
+    toast.success("Register successfully!");
     console.log("check data:", userData);
   };
   useEffect(() => {
     // Test API
     /* axios
-      .get("http://127.0.0.1:8080/api/test-api")
-      .then((response) => {
-        console.log("API Response:", response.data);
-      })
-      .catch((error) => {
-        console.error("API Error:", error);
-      }); */
-  });
+            .get("http://127.0.0.1:8080/api/test-api")
+            .then((response) => {
+              console.log("API Response:", response.data);
+            })
+            .catch((error) => {
+              console.error("API Error:", error);
+            }); */
+  }, []);
   return (
     <div className={styles.loginContainer}>
       <div className="container px-3">
@@ -46,7 +78,7 @@ const Register = () => {
           <div
             className={`col-sm-5 col-12  d-flex flex-column gap-3 py-3  ${styles.contentRight} `}
           >
-            <Form>
+            <Form onSubmit={handleRegister}>
               <div className={`d-sm-none ${styles.brand}`}>Quang Long</div>
               <Form.Group className="mb-3" controlId="formGroupEmail">
                 <Form.Label>Email address</Form.Label>
@@ -93,15 +125,14 @@ const Register = () => {
                   onChange={(e) => setRePassword(e.target.value)}
                 />
               </Form.Group>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                style={{ width: "100%", textAlign: "center", margin: "0 auto" }}
+              >
+                Register
+              </button>
             </Form>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              style={{ width: "80%", textAlign: "center", margin: "0 auto" }}
-              onClick={() => handleRegister()}
-            >
-              Register
-            </button>
             <span className="text-center">
               <a href="#" className={styles.forgotPassword}>
                 {" "}
@@ -111,8 +142,9 @@ const Register = () => {
             <hr />
             <button
               className="btn btn-success"
-              style={{ width: "80%", textAlign: "center", margin: "0 auto" }}
+              type="button"
               onClick={() => navigate("/login")}
+              style={{ width: "80%", textAlign: "center", margin: "0 auto" }}
             >
               <span className={styles.alreadyHaveAccount}>
                 Already have an account login
