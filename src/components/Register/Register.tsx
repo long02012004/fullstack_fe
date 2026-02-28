@@ -1,8 +1,8 @@
 import styles from "./Register.module.scss";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
-/* import axios from "axios";
- */ import { useEffect, useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { FormEvent } from "react";
 
@@ -13,32 +13,67 @@ const Register = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [rePassword, setRePassword] = useState<string>("");
+  const [defaultValidInput, setDefaultValidInput] = useState({
+    isValidEmail: true,
+    isValidPhone: true,
+    isValidPassword: true,
+    isMatchPassword: true,
+  });
+  const [objCheckInput, setObjCheckInput] = useState(defaultValidInput);
+
   const isValidateInput = () => {
+    setObjCheckInput(defaultValidInput);
     if (!email || !phone || !username || !password || !rePassword) {
       toast.error("Please fill in all fields!");
-      return false;
-    }
-    if (password !== rePassword) {
-      toast.error("Password and Re-enter Password do not match!");
-      return false;
-    }
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters long!");
+
       return false;
     }
     if (!/^\S+@\S+\.\S+$/.test(email)) {
+      setObjCheckInput(defaultValidInput);
       toast.error("Invalid email format!");
+      setObjCheckInput({ ...defaultValidInput, isValidEmail: false });
       return false;
     }
     if (!/^\d{10,}$/.test(phone)) {
+      setObjCheckInput(defaultValidInput);
       toast.error("Invalid phone number format! Must be at least 10 digits.");
+      setObjCheckInput({ ...defaultValidInput, isValidPhone: false });
       return false;
     }
+    if (password.length < 6) {
+      setObjCheckInput(defaultValidInput);
+      toast.error("Password must be at least 6 characters long!");
+      setObjCheckInput({ ...defaultValidInput, isValidPassword: false });
+      return false;
+    }
+    if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$/.test(password)) {
+      setObjCheckInput(defaultValidInput);
+      toast.error(
+        "Password must contain at least one uppercase letter, one lowercase letter, and one digit!",
+      );
+      setObjCheckInput({ ...defaultValidInput, isValidPassword: false });
+      return false;
+    }
+    if (password !== rePassword) {
+      setObjCheckInput(defaultValidInput);
+      toast.error("Password and Re-enter Password do not match!");
+      setObjCheckInput({ ...defaultValidInput, isMatchPassword: false });
+      return false;
+    }
+
     return true;
   };
   const handleRegister = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const isValid = isValidateInput();
+    if (isValid === true) {
+      axios.post("http://127.0.0.1:8080/api/v1/register", {
+        email,
+        phone,
+        username,
+        password,
+      });
+    }
     if (!isValid) {
       return;
     }
@@ -53,14 +88,6 @@ const Register = () => {
   };
   useEffect(() => {
     // Test API
-    /* axios
-            .get("http://127.0.0.1:8080/api/test-api")
-            .then((response) => {
-              console.log("API Response:", response.data);
-            })
-            .catch((error) => {
-              console.error("API Error:", error);
-            }); */
   }, []);
   return (
     <div className={styles.loginContainer}>
@@ -87,6 +114,7 @@ const Register = () => {
                   placeholder="Email address or phone number"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  className={objCheckInput.isValidEmail ? "" : "is-invalid"}
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formGroupPhone">
@@ -96,6 +124,7 @@ const Register = () => {
                   placeholder="Enter your phone number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
+                  className={objCheckInput.isValidPhone ? "" : "is-invalid"}
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formGroupUserName">
@@ -114,6 +143,7 @@ const Register = () => {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  className={objCheckInput.isValidPassword ? "" : "is-invalid"}
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formGroupRePassword">
@@ -123,6 +153,7 @@ const Register = () => {
                   placeholder="Re-enter Password"
                   value={rePassword}
                   onChange={(e) => setRePassword(e.target.value)}
+                  className={objCheckInput.isMatchPassword ? "" : "is-invalid"}
                 />
               </Form.Group>
               <button
