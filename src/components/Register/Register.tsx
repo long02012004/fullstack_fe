@@ -1,10 +1,10 @@
 import styles from "./Register.module.scss";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { FormEvent } from "react";
+import { registerNewUser } from "../../services/userService";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -63,28 +63,21 @@ const Register = () => {
 
     return true;
   };
-  const handleRegister = (e: FormEvent<HTMLFormElement>) => {
+  const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const isValid = isValidateInput();
     if (isValid === true) {
-      axios.post("http://127.0.0.1:8080/api/v1/register", {
-        email,
-        phone,
-        username,
-        password,
-      });
+      const res = await registerNewUser(email, phone, username, password);
+      if (res.data && res.data.EC === 0) {
+        toast.success(res.data.EM);
+        navigate("/login");
+      } else {
+        toast.error(res.data.EM);
+      }
+      if (!isValid) {
+        return;
+      }
     }
-    if (!isValid) {
-      return;
-    }
-    const userData = {
-      email,
-      phone,
-      username,
-      password,
-    };
-    toast.success("Register successfully!");
-    console.log("check data:", userData);
   };
   useEffect(() => {
     // Test API
